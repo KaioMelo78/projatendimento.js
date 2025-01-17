@@ -1,3 +1,4 @@
+const atendimentoController = require("../controllers/atendimentoController");
 const conexao = require("../infraestrutura/conexao");  
 class AtendimentoModel {
     listar() {
@@ -28,6 +29,21 @@ class AtendimentoModel {
                 });
             });
     };
+
+    atualizar(atendimentoAtualizado, id) {
+        const sql = "UPDATE atendimento SET ? WHERE id = ?";
+        return new Promise((resolve, reject) => {
+            conexao.query(sql, [atendimentoAtualizado, id], (error, resposta) => {
+                if(error){
+                    console.log("Deu erro na hora de atualizar");
+                    reject(error);
+                    return;
+                };
+                console.log("a tu a li zei");
+                resolve(resposta);
+            });
+        });
+};
 };
 
 module.exports = new AtendimentoModel

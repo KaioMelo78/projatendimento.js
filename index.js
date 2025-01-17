@@ -5,11 +5,8 @@ const router = require("./routers/index")
 const conexao = require("./infraestrutura/conexao");
 const tabelas = require("./infraestrutura/tabelas");
 
-app.use(express.json());
-app.use(express.urlencoded( {extended: true}));
-
-tabelas.init(conexao);
 router(app, express);
+tabelas.init(conexao);
 
 app.listen(port, (error) => {
     if(error) {
