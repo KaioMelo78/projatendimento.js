@@ -1,49 +1,34 @@
 const atendimentoController = require("../controllers/atendimentoController");
 const conexao = require("../infraestrutura/conexao");  
 class AtendimentoModel {
-    listar() {
-        const sql = "SELECT * FROM atendimento";
+    executaQuery(sql, parametros = ""){
         return new Promise((resolve, reject) => {
-            conexao.query(sql, {}, (error, resposta) => {
-                if(error) {
-                    console.log("Deu erro ao listar...");
-                    reject(error);
-                    return;
-                };
-                console.log("hell yeah");
-                resolve(resposta);
+            conexao.query(sql, parametros, (error, resposta) => {
+            if(error) {
+                return reject(error);
+            };
+            return resolve(resposta);
             });
         });
     };
+    listar() {
+        const sql = "SELECT * FROM atendimento";
+        return this.executaQuery(sql);
+    };
     criar(novoAtendimento) {
-            const sql = "INSERT INTO atendimento SET ?";
-            return new Promise((resolve, reject) => {
-                conexao.query(sql, novoAtendimento, (error, resposta) => {
-                    if(error){
-                        console.log("Deu erro na hora de inserir");
-                        reject(error);
-                        return;
-                    };
-                    console.log("receba suiii");
-                    resolve(resposta);
-                });
-            });
+        const sql = "INSERT INTO atendimento SET ?";
+        return this.executaQuery(sql, novoAtendimento);    
     };
 
     atualizar(atendimentoAtualizado, id) {
         const sql = "UPDATE atendimento SET ? WHERE id = ?";
-        return new Promise((resolve, reject) => {
-            conexao.query(sql, [atendimentoAtualizado, id], (error, resposta) => {
-                if(error){
-                    console.log("Deu erro na hora de atualizar");
-                    reject(error);
-                    return;
-                };
-                console.log("a tu a li zei");
-                resolve(resposta);
-            });
-        });
-};
+        return this.executaQuery(sql, [atendimentoAtualizado, id]);
+    };
+
+    deletar(id) {
+        const sql = "DELETE FROM atendimento WHERE id = ?";
+        return this.executaQuery(sql, id);
+    };
 };
 
 module.exports = new AtendimentoModel
