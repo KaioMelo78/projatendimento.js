@@ -26,11 +26,7 @@ router.get("/atendimentos", (req, res) => {
 });
 
 router.post("/atendimentos", (req, res) => {
-    const criadoEm = formatDate(today, "aaaa-mm-dd");
-    const alteradoEm = formatDate(today, "aaaa-mm-dd");
-    const novoAtendimento = [criadoEm, alteradoEm, req.body];
-    console.log(novoAtendimento);
-    console.log(formatDate(today, "aaaa-mm-dd"))
+    const novoAtendimento = req.body;
     const atendimento = atendimentoController.criar(novoAtendimento);
     atendimento
     .then((atendimentoCriado) => res.status(201).json(atendimentoCriado))
@@ -39,8 +35,11 @@ router.post("/atendimentos", (req, res) => {
 
 router.put("/atendimento/:id", (req, res) => {
     const {id} = req.params;
-    const resposta = atendimentoController.alterar(id);
-    res.send(resposta);
+    const atendimentoAtualizado = req.body;
+    const atendimento = atendimentoController.atualizar(atendimentoAtualizado, id);
+    atendimento
+    .then((resultAtendimentoAtualizado) => res.status(200).json(resultAtendimentoAtualizado))
+    .catch((error) => res.status(400).json(error.message));
 })
 
 router.delete("/atendimento/:id", (req, res) => {

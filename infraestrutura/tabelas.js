@@ -9,7 +9,6 @@ class tabelas {
             CREATE TABLE IF NOT EXISTS atendimento (
                 id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 createdAt DATE,
-                updatedAt DATE,
                 servico VARCHAR(100),
                 cliente VARCHAR(100),
                 STATUS ENUM("ativo", "realizado", "cancelado") DEFAULT "ativo"
