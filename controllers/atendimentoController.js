@@ -16,14 +16,14 @@ class atendimentoController {
     atualizar(req, res){
         const {id} = req.params;
         const atendimentoAtualizado = req.body;
-        const atendimento = atendimentoModel.atualizar(atendimentoAtualizado, id);
+        const atendimento = atendimentoModel.atualizar(atendimentoAtualizado, +id);
         atendimento
         .then((resultAtendimentoAtualizado) => res.status(200).json(resultAtendimentoAtualizado))
         .catch((error) => res.status(400).json(error.message));
     }
     deletar(req, res){
         const {id} = req.params;
-        const atendimento = atendimentoModel.deletar(id);
+        const atendimento = atendimentoModel.deletar(+id);
         atendimento
         .then((resultAtendimentoDeletado) => res.status(200).json(resultAtendimentoDeletado))
         .catch((error) => res.status(400).json(error.message));

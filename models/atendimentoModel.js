@@ -1,33 +1,34 @@
-const atendimentoController = require("../controllers/atendimentoController");
-const conexao = require("../infraestrutura/conexao");  
+const {PrismaClient} = require("@prisma/client");
+const prisma = new PrismaClient();
+
 class AtendimentoModel {
-    executaQuery(sql, parametros = ""){
-        return new Promise((resolve, reject) => {
-            conexao.query(sql, parametros, (error, resposta) => {
-            if(error) {
-                return reject(error);
-            };
-            return resolve(resposta);
-            });
+    async listar() {
+        const data = await prisma.atendimento.findMany({
+            where: {deleted: false}
+        });
+        console.log("era essa peça que voce queria?");
+        return data;
+    
+    };
+    async criar(novoAtendimento) {
+        return await prisma.atendimento.create({
+            data: novoAtendimento
+        })
+    };
+
+    async atualizar(atendimentoAtualizado, id) {
+        console.log(dataatual);
+        return await prisma.atendimento.update({
+            where: { id },
+            data: atendimentoAtualizado
         });
     };
-    listar() {
-        const sql = "SELECT * FROM atendimento";
-        return this.executaQuery(sql);
-    };
-    criar(novoAtendimento) {
-        const sql = "INSERT INTO atendimento SET ?";
-        return this.executaQuery(sql, novoAtendimento);    
-    };
 
-    atualizar(atendimentoAtualizado, id) {
-        const sql = "UPDATE atendimento SET ? WHERE id = ?";
-        return this.executaQuery(sql, [atendimentoAtualizado, id]);
-    };
-
-    deletar(id) {
-        const sql = "DELETE FROM atendimento WHERE id = ?";
-        return this.executaQuery(sql, id);
+    async deletar(id) {
+        return await prisma.atendimento.update({
+            where: { id },
+            data: {deleted: true}
+        })
     };
 };
 
